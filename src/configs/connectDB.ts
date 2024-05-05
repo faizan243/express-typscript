@@ -3,6 +3,7 @@ import mongoose, { ConnectOptions } from "mongoose";
 // Define a function to connect to MongoDB with proper types
 const connectDB = async (DATABASE_URL: any) => {
   try {
+    mongoose.set('strictQuery', false);
     const DB_OPTIONS: ConnectOptions = {
       dbName: "express-ts",
     };
