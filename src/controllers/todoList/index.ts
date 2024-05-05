@@ -10,7 +10,7 @@ type Item = {
 class TodoController {
     static createNewItem = async (req: Request, res: Response) :Promise <void>=> {
         try {
-            const [name, value] = req.body
+            const { name, value } = req.body
             if(!name || !value){
                res.status(400).send({
                     message: "All fields are required",
@@ -27,11 +27,9 @@ class TodoController {
             newItem.save();
             res.status(201).send({
                 message: "Item Created SuccessFully",
-                data: [
-                    {
-                        item: newItem
-                    }
-                ],
+                data: {
+                    item: newItem
+                },
                 status: "success"
             })
 
@@ -39,6 +37,28 @@ class TodoController {
             console.log(error);
         }
 
+    }
+
+    static getAllItems = async (req: Request, res: Response) :Promise <void>=> {
+        try {
+            const items = await todoListModel.find();
+            if(!items){
+                res.status(404).send({
+                    message: "No Items Found",
+                    status: "error"
+                });
+                return;
+            }
+            res.status(200).send({
+                message: "All Items",
+                data: {
+                    items
+                },
+                status: "success"
+            })
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
